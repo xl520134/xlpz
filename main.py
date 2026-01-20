@@ -21,7 +21,7 @@ class MyPlugin(Star):
         message_str = event.message_str # 用户发的纯文本消息字符串
         message_chain = event.get_messages() # 用户所发的消息的消息链
         logger.info(message_chain)
-        yield event.plain_result(f"你好啊, {user_name}!") # 优化：带上用户名
+        yield event.plain_result(f"你好啊!") 
 
     # 新增 随机一言 指令
     @filter.command("随机一言")
@@ -65,51 +65,6 @@ class MyPlugin(Star):
         # 捕获其他未知异常
         except Exception as e:
             logger.error(f"随机一言功能执行异常: {str(e)}")
-            yield event.plain_result(f"❌ 发生未知错误：{str(e)}")
-
-
-    @filter.command("随机情话")
-    async def random_word(self, event: AstrMessageEvent):
-        """获取一条随机情话"""
-        api_url = "https://api.tangdouz.com/love.php"
-        
-        try:
-            # 设置超时时间，避免请求卡住
-            timeout = aiohttp.ClientTimeout(total=10)
-            
-            # 异步请求 API
-            async with aiohttp.ClientSession(timeout=timeout) as session:
-                async with session.get(api_url) as response:
-                    # 检查响应状态码
-                    if response.status == 200:
-                        # 读取响应内容（API 返回的是纯文本）
-                        result = await response.text()
-                        # 去除首尾空白字符
-                        result = result.strip()
-                        
-                        # 如果返回内容不为空，返回给用户
-                        if result:
-                            yield event.plain_result(result)
-                        else:
-                            yield event.plain_result("😯 随机情话接口返回空内容了")
-                    else:
-                        logger.error(f"随机情话API请求失败，状态码：{response.status}")
-                        yield event.plain_result(f"❌ 随机情话接口请求失败，状态码：{response.status}")
-
-
-        # 捕获网络相关异常
-        except aiohttp.ClientError as e:
-            logger.error(f"随机情话API网络请求异常: {str(e)}")
-            yield event.plain_result("❌ 网络请求失败，请检查网络或稍后再试")
-        
-        # 捕获超时异常
-        except asyncio.TimeoutError:
-            logger.error("随机情话API请求超时")
-            yield event.plain_result("⏱️ 请求超时了，请稍后再试")
-        
-        # 捕获其他未知异常
-        except Exception as e:
-            logger.error(f"随机情话功能执行异常: {str(e)}")
             yield event.plain_result(f"❌ 发生未知错误：{str(e)}")
 
     async def terminate(self):

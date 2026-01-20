@@ -5,7 +5,7 @@ from astrbot.api import logger
 import aiohttp
 import asyncio
 
-@register("helloworld", "YourName", "一个简单的 Hello World 插件（包含随机一言、随机情话功能）", "1.0.0")
+@register("helloworld", "YourName", "一个简单的 Hello World 插件（包含随机一言、随机情话、趣味笑话功能）", "1.0.0")
 class MyPlugin(Star):
     def __init__(self, context: Context):
         super().__init__(context)
@@ -67,7 +67,7 @@ class MyPlugin(Star):
             logger.error(f"随机一言功能执行异常: {str(e)}")
             yield event.plain_result(f"❌ 发生未知错误：{str(e)}")
 
-    # 新增 随机情话 指令
+    # 随机情话 指令
     @filter.command("随机情话")
     async def random_love(self, event: AstrMessageEvent):
         """获取一条随机情话"""
@@ -111,9 +111,9 @@ class MyPlugin(Star):
             logger.error(f"随机情话功能执行异常: {str(e)}")
             yield event.plain_result(f"❌ 发生未知错误：{str(e)}")
 
-    # 新增 趣味笑话 指令
+    # 趣味笑话 指令
     @filter.command("趣味笑话")
-    async def random_love(self, event: AstrMessageEvent):
+    async def random_joke(self, event: AstrMessageEvent):  # 修复：修改为唯一的方法名
         """获取一条趣味笑话"""
         api_url = "https://api.tangdouz.com/xh.php"
         
@@ -133,12 +133,13 @@ class MyPlugin(Star):
                         
                         # 如果返回内容不为空，返回给用户
                         if result:
-                            yield event.plain_result(f"{result}")
+                            yield event.plain_result(f"😂 {result}")  # 优化：添加搞笑emoji
                         else:
                             yield event.plain_result("😯 趣味笑话接口返回空内容了")
                     else:
                         logger.error(f"趣味笑话API请求失败，状态码：{response.status}")
-                        yield event.plain_result(f"❌ 随机情话接口请求失败，状态码：{response.status}")
+                        # 修复：更新错误提示文案
+                        yield event.plain_result(f"❌ 趣味笑话接口请求失败，状态码：{response.status}")
         
         # 捕获网络相关异常
         except aiohttp.ClientError as e:

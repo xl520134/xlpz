@@ -14,21 +14,21 @@ class MyPlugin(Star):
     async def initialize(self):
         """可选择实现异步的插件初始化方法，当实例化该插件类之后会自动调用该方法。"""
 
-    # 原有 hello world 指令
-    @filter.command("你好")
-    async def helloworld(self, event: AstrMessageEvent):
-        """这是一个 hello world 指令"""
-        user_name = event.get_sender_name()
-        message_str = event.message_str # 用户发的纯文本消息字符串
-        message_chain = event.get_messages() # 用户所发的消息的消息链
-        logger.info(message_chain)
-        yield event.plain_result(f"你好啊!") 
+#    # 原有 hello world 指令
+# #   @filter.command("你好")
+# #   async def helloworld(self, event: AstrMessageEvent):
+# #       """这是一个 hello world 指令"""
+#        user_name = event.get_sender_name()
+#        message_str = event.message_str # 用户发的纯文本消息字符串
+#        message_chain = event.get_messages() # 用户所发的消息的消息链
+#        logger.info(message_chain)
+#        yield event.plain_result(f"你好啊!") 
 
     # 随机一言 指令
     @filter.command("随机一言")
     async def random_word(self, event: AstrMessageEvent):
         """获取一条随机一言"""
-        api_url = "https://xiaodi.jujukai.cn/Api/sjyy.php"
+        api_url = "https://www.klapi.cn/api/yiyan.php?type="
         
         try:
             # 设置超时时间，避免请求卡住

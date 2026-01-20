@@ -24,7 +24,7 @@ class MyPlugin(Star):
         yield event.plain_result(f"你好啊, {user_name}!") # 优化：带上用户名
 
     # 新增 随机一言 指令
-    @filter.command("一言")
+    @filter.command("随机一言")
     async def random_word(self, event: AstrMessageEvent):
         """获取一条随机一言"""
         api_url = "https://xiaodi.jujukai.cn/Api/sjyy.php"
